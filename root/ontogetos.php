@@ -46,10 +46,12 @@ if ($state['8'] == $state['12']) {
 </head>
 <body>
 
+<a href="ontogetos.php?reset">reset</a><br/>
 <canvas id="canvas" width="400" height="200" style="border:1px solid #000000;">
 </canvas>
 <br/>
 <?php echo $solution; ?>
+
 
 
 
