@@ -35,7 +35,7 @@ $solution = '';
 
 
 if ($state['8'] == $state['12']) {
-    $solution = 'forditva.html';
+    $solution = 'stego.html';
 }
 
 ?>
