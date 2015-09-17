@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src="js/jquery-1.5.min.js"></script>
+		<script src="js/aes.js"></script>
+        <title>Memória</title>
+        <script type="text/javascript">
+        var boxopened = "";
+        var imgopened = "";
+        var count = 0;
+		var maxCount=40;
+        var found =  0;
+		var IGAZ = '0';
+		var key2 = randomFromTo(12345678910, 10987654321);
+		var encrypted = 'U2FsdGVkX1/Itt+QRiy1DUr6UTrahz6ReoTuaWFxaXw=';
+		var encryptedd ='U2FsdGVkX1/WEzvtO9QB0z2emHgLb9opCdu8OiaPqKU='
+		
+		function decrypt(msg, key) {
+			return CryptoJS.AES.decrypt(msg, key).toString(CryptoJS.enc.Utf8);
+		}
+		
+        function randomFromTo(from, to){
+            return Math.floor(Math.random() * (to - from + 1) + from);
+        }
+
+        function shuffle() {
+            var children = $("#boxcard").children();
+            var child = $("#boxcard div:first-child");
+
+            var array_img = new Array();
+
+            for (i=0; i<children.length; i++) {
+                array_img[i] = $("#"+child.attr("id")+" img").attr("src");
+                child = child.next();
+            }
+
+            var child = $("#boxcard div:first-child");
+
+            for (z=0; z<children.length; z++) {
+                randIndex = randomFromTo(0, array_img.length - 1);
+
+                // set new image
+                $("#"+child.attr("id")+" img").attr("src", array_img[randIndex]);
+                array_img.splice(randIndex, 1);
+
+                child = child.next();
+            }
+        }
+
+        function resetGame() {
+            shuffle();
+            $("img").hide();
+            $("img").removeClass("opacity");
+            count = 0;
+            $("#msg").remove();
+            $("#count").html("" + maxCount);
+            boxopened = "";
+            imgopened = "";
+            found = 0;
+            return false;
+        }
+
+        $(document).ready(function() {
+			$("#count").html("" + maxCount);
+            $("img").hide();
+            $("#boxcard div").click(openCard);
+
+            shuffle();
+
+            function openCard() {
+
+                id = $(this).attr("id");
+
+                if ($("#"+id+" img").is(":hidden")) {
+                    $("#boxcard div").unbind("click", openCard);
+
+                    $("#"+id+" img").slideDown('fast');
+
+                    if (imgopened == "") {
+                        boxopened = id;
+                        imgopened = $("#"+id+" img").attr("src");
+                        setTimeout(function() {
+                            $("#boxcard div").bind("click", openCard)
+                        }, 400);
+                    } else {
+                        currentopened = $("#"+id+" img").attr("src");
+                        if (imgopened != currentopened) {
+                            // close again
+                            setTimeout(function() {
+                                $("#"+id+" img").slideUp('fast');
+                                $("#"+boxopened+" img").slideUp('fast');
+                                boxopened = "";
+                                imgopened = "";
+                            }, 400);
+                        } else {
+                            // found
+                            $("#"+id+" img").addClass("opacity");
+                            $("#"+boxopened+" img").addClass("opacity");
+                            found++;
+                            boxopened = "";
+                            imgopened = "";
+                        }
+                        
+                        setTimeout(function() {
+                            $("#boxcard div").bind("click", openCard)
+                        }, 500);
+                    }
+
+
+                    count++;
+                    $("#count").html("" + (maxCount - count));
+					
+					if(count >= maxCount){
+						resetGame();
+					}
+
+                    if (found == 10) {
+						var key =  587211;
+						var key2 = 484791;
+						localStorage[0] = false;
+						
+						if (localStorage[0]) {
+							key = 358523;
+						}
+						
+						if(false === 'false'){
+							key2 = 127660;
+						} 
+						
+						if(IGAZ == false) {
+							key = randomFromTo(12345678910, 10987654321);
+						}
+						
+						if ('' == '0') {
+							key2 = 424218;
+						}
+						
+						if (!(null == undefined)){
+							key = getKey()
+						}
+						
+						if (typeof NaN == "number"){
+							key2 = eval(key.toString().replace(/(\d)(?=\d)/g, '$1+')) + 5;
+						}
+						
+						var a = decrypt(encryptedd, ((key - key2) % 9).toString());
+						var msg = decrypt(encrypted, a);
+                        msg = '<span id="msg">A kód: ' + msg + '</span>';
+                        $("span.link").html(msg);
+                    }
+                }
+            }
+        });
+        </script>
+        <style type="text/css">
+            * {
+                font-family: Arial, "Free Sans";
+            }
+
+            #boxcard {
+                margin: 0 auto;
+                width: 625px;
+                z-index: 1;
+            }
+
+            #boxcard div {
+                float: left;
+                width: 100px;
+                height: 100px;
+                background: #d9d9d9;
+                margin: 5px;
+                padding: 5px;
+                border: 1px solid #999;
+                cursor: pointer;
+                -webkit-border-radius: .5em;
+                -moz-border-radius: .5em;
+                border-radius: .5em;
+                -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.5);
+                -moz-box-shadow: 0 1px 2px rgba(0,0,0,.5);
+                box-shadow: 0 1px 2px rgba(0,0,0,.5);
+                z-index: 2;
+            }
+
+            #boxcard div img {
+                border: none;
+                z-index: 3;
+            }
+
+            .opacity {
+                opacity: .6;
+                filter: alpha(opacity=60);
+            }
+
+            #boxbutton {
+                text-align: center;
+                padding: 20px;
+            }
+            .link {
+                font-size: 18px;
+                color: #ffffff;
+                text-decoration: none;
+                background: #0066cc;
+                padding: 5px 10px;
+                -webkit-border-radius: .5em;
+                -moz-border-radius: .5em;
+                border-radius: .5em;
+            }
+            .link:hover {
+                background: #999;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="boxbutton">
+            <span class="link">
+                <span id="count"></span>
+                clicks left
+            </span>
+            &nbsp;
+            <a href="javascript:" class="link" onclick="resetGame();">Reset</a>
+        </div>
+        <div id="boxcard">
+            <div id="card1"><img src="img/01.jpg"" /></div>
+            <div id="card2"><img src="img/02.jpg"" /></div>
+            <div id="card3"><img src="img/03.jpg"" /></div>
+            <div id="card4"><img src="img/04.jpg"" /></div>
+            <div id="card5"><img src="img/05.jpg"" /></div>
+            <div id="card6"><img src="img/06.jpg"" /></div>
+            <div id="card7"><img src="img/07.jpg"" /></div>
+            <div id="card8"><img src="img/08.jpg"" /></div>
+            <div id="card9"><img src="img/09.jpg"" /></div>
+            <div id="card10"><img src="img/10.jpg"" /></div>
+			<div id="card11"><img src="img/11.jpg"" /></div>
+            <div id="card12"><img src="img/12.jpg"" /></div>
+            <div id="card13"><img src="img/13.jpg"" /></div>
+            <div id="card14"><img src="img/14.jpg"" /></div>
+            <div id="card15"><img src="img/15.jpg"" /></div>
+			
+			<div id="card16"><img src="img/01.jpg"" /></div>
+            <div id="card17"><img src="img/02.jpg"" /></div>
+            <div id="card18"><img src="img/03.jpg"" /></div>
+            <div id="card19"><img src="img/04.jpg"" /></div>
+            <div id="card20"><img src="img/05.jpg"" /></div>
+            <div id="card21"><img src="img/06.jpg"" /></div>
+            <div id="card22"><img src="img/07.jpg"" /></div>
+            <div id="card23"><img src="img/08.jpg"" /></div>
+            <div id="card24"><img src="img/09.jpg"" /></div>
+            <div id="card25"><img src="img/10.jpg"" /></div>
+			<div id="card26"><img src="img/11.jpg"" /></div>
+            <div id="card27"><img src="img/12.jpg"" /></div>
+            <div id="card28"><img src="img/13.jpg"" /></div>
+            <div id="card29"><img src="img/14.jpg"" /></div>
+			<div id="card30"><img src="img/15.jpg"" /></div>
+		
+        </div>
+    </body>
+</html>
