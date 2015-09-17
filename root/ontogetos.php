@@ -35,7 +35,7 @@ $solution = '';
 
 
 if ($state['8'] == $state['12']) {
-    $solution = 'stego.html';
+    $solution = 'memoria.html';
 }
 
 ?>
